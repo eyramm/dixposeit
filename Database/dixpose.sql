@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 18, 2018 at 05:04 PM
+-- Generation Time: Feb 18, 2018 at 05:26 PM
 -- Server version: 10.1.26-MariaDB
 -- PHP Version: 7.1.8
 
@@ -230,7 +230,7 @@ ALTER TABLE `collections`
   ADD PRIMARY KEY (`id`),
   ADD KEY `customer_id` (`customer_id`),
   ADD KEY `bin_id` (`bin_id`),
-  ADD KEY `supervisor_id` (`supervisor_id`);
+  ADD KEY `supervisor_id` (`supervisor_id`) USING BTREE;
 
 --
 -- Indexes for table `customers`
@@ -273,9 +273,9 @@ ALTER TABLE `excess_bins`
 --
 ALTER TABLE `schedules`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `driver_id` (`driver_id`),
+  ADD KEY `supervisor_id` (`supervisor_id`),
   ADD KEY `sector_id` (`sector_id`),
-  ADD KEY `supervisor_id` (`supervisor_id`);
+  ADD KEY `driver_id` (`driver_id`);
 
 --
 -- Indexes for table `sectors`
@@ -406,9 +406,8 @@ ALTER TABLE `excess_bins`
 -- Constraints for table `schedules`
 --
 ALTER TABLE `schedules`
-  ADD CONSTRAINT `schedules_ibfk_1` FOREIGN KEY (`sector_id`) REFERENCES `sectors` (`id`),
-  ADD CONSTRAINT `schedules_ibfk_2` FOREIGN KEY (`driver_id`) REFERENCES `drivers` (`id`),
-  ADD CONSTRAINT `schedules_ibfk_3` FOREIGN KEY (`supervisor_id`) REFERENCES `users` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+  ADD CONSTRAINT `schedules_ibfk_1` FOREIGN KEY (`supervisor_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `schedules_ibfk_2` FOREIGN KEY (`sector_id`) REFERENCES `sectors` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `sectors`
