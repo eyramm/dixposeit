@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 17, 2018 at 08:38 PM
+-- Generation Time: Feb 18, 2018 at 04:47 PM
 -- Server version: 10.1.26-MariaDB
 -- PHP Version: 7.1.8
 
@@ -41,6 +41,7 @@ CREATE TABLE `bins` (
 
 CREATE TABLE `collections` (
   `id` int(11) NOT NULL,
+  `supervisor_id` int(11) NOT NULL,
   `customer_id` int(11) NOT NULL,
   `bin_id` int(11) NOT NULL,
   `bins_tanken` int(11) NOT NULL,
@@ -56,6 +57,7 @@ CREATE TABLE `collections` (
 
 CREATE TABLE `customers` (
   `id` int(11) NOT NULL,
+  `supervisor_id` int(11) NOT NULL,
   `first_name` varchar(255) NOT NULL,
   `last_name` varchar(255) NOT NULL,
   `other_names` varchar(255) NOT NULL,
@@ -79,23 +81,6 @@ CREATE TABLE `customer_bin` (
   `id` int(11) NOT NULL,
   `customer_id` int(11) NOT NULL,
   `bin_id` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `drivers`
---
-
-CREATE TABLE `drivers` (
-  `id` int(11) NOT NULL,
-  `first_name` varchar(255) NOT NULL,
-  `last_name` varchar(255) NOT NULL,
-  `phone_no` varchar(255) NOT NULL,
-  `phone_no_2` varchar(255) NOT NULL,
-  `email` varchar(255) NOT NULL,
-  `license_id` varchar(255) NOT NULL,
-  `class_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -145,39 +130,16 @@ CREATE TABLE `excess_bins` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `pick_up_days`
---
-
-CREATE TABLE `pick_up_days` (
-  `id` int(11) NOT NULL,
-  `name` varchar(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `pick_up_days`
---
-
-INSERT INTO `pick_up_days` (`id`, `name`) VALUES
-(1, 'Monday'),
-(2, 'Tuesday'),
-(3, 'Wednesday'),
-(4, 'Thursday'),
-(5, 'Friday'),
-(6, 'Saturday'),
-(7, 'Sunday');
-
--- --------------------------------------------------------
-
---
 -- Table structure for table `schedules`
 --
 
 CREATE TABLE `schedules` (
   `id` int(11) NOT NULL,
+  `supervisor_id` int(11) NOT NULL,
   `sector_id` int(11) NOT NULL,
   `driver_id` int(11) NOT NULL,
-  `start_day` int(11) NOT NULL,
-  `end_day` int(11) NOT NULL,
+  `start_date` date NOT NULL,
+  `end_date` date NOT NULL,
   `status` tinyint(4) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -189,6 +151,7 @@ CREATE TABLE `schedules` (
 
 CREATE TABLE `sectors` (
   `id` int(11) NOT NULL,
+  `supervisor_id` int(11) NOT NULL,
   `name` varchar(255) NOT NULL,
   `electoral_area_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -201,6 +164,7 @@ CREATE TABLE `sectors` (
 
 CREATE TABLE `trucks` (
   `id` int(11) NOT NULL,
+  `supervisor_id` int(11) NOT NULL,
   `category_id` int(11) NOT NULL,
   `reg_no` varchar(255) NOT NULL,
   `millage` int(11) NOT NULL
@@ -242,7 +206,11 @@ CREATE TABLE `users` (
   `phone_no` varchar(255) NOT NULL,
   `phone_no_2` varchar(255) NOT NULL,
   `username` varchar(255) NOT NULL,
-  `password` varchar(255) NOT NULL
+  `password` varchar(255) NOT NULL,
+  `type` enum('supervisor','driver') NOT NULL,
+  `parent` int(11) NOT NULL DEFAULT '0',
+  `license_id` varchar(255) NOT NULL,
+  `class_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -261,14 +229,16 @@ ALTER TABLE `bins`
 ALTER TABLE `collections`
   ADD PRIMARY KEY (`id`),
   ADD KEY `customer_id` (`customer_id`),
-  ADD KEY `bin_id` (`bin_id`);
+  ADD KEY `bin_id` (`bin_id`),
+  ADD KEY `supervisor_id` (`supervisor_id`);
 
 --
 -- Indexes for table `customers`
 --
 ALTER TABLE `customers`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `sector_id` (`sector_id`);
+  ADD KEY `sector_id` (`sector_id`),
+  ADD KEY `supervisor_id` (`supervisor_id`);
 
 --
 -- Indexes for table `customer_bin`
@@ -277,13 +247,6 @@ ALTER TABLE `customer_bin`
   ADD PRIMARY KEY (`id`),
   ADD KEY `customer_id` (`customer_id`),
   ADD KEY `bin_id` (`bin_id`);
-
---
--- Indexes for table `drivers`
---
-ALTER TABLE `drivers`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `class_id` (`class_id`);
 
 --
 -- Indexes for table `driver_categories`
@@ -306,34 +269,29 @@ ALTER TABLE `excess_bins`
   ADD KEY `bin_id` (`bin_id`);
 
 --
--- Indexes for table `pick_up_days`
---
-ALTER TABLE `pick_up_days`
-  ADD PRIMARY KEY (`id`);
-
---
 -- Indexes for table `schedules`
 --
 ALTER TABLE `schedules`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `pick_up_day_id` (`start_day`),
   ADD KEY `driver_id` (`driver_id`),
   ADD KEY `sector_id` (`sector_id`),
-  ADD KEY `end_day` (`end_day`);
+  ADD KEY `supervisor_id` (`supervisor_id`);
 
 --
 -- Indexes for table `sectors`
 --
 ALTER TABLE `sectors`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `electoral_area_id` (`electoral_area_id`);
+  ADD KEY `electoral_area_id` (`electoral_area_id`),
+  ADD KEY `supervisor_id` (`supervisor_id`);
 
 --
 -- Indexes for table `trucks`
 --
 ALTER TABLE `trucks`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `category_id` (`category_id`);
+  ADD KEY `category_id` (`category_id`),
+  ADD KEY `supervisor_id` (`supervisor_id`);
 
 --
 -- Indexes for table `truck_categories`
@@ -345,7 +303,8 @@ ALTER TABLE `truck_categories`
 -- Indexes for table `users`
 --
 ALTER TABLE `users`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `class_id` (`class_id`);
 
 --
 -- AUTO_INCREMENT for dumped tables
@@ -372,11 +331,6 @@ ALTER TABLE `customers`
 ALTER TABLE `customer_bin`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 --
--- AUTO_INCREMENT for table `drivers`
---
-ALTER TABLE `drivers`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
---
 -- AUTO_INCREMENT for table `driver_categories`
 --
 ALTER TABLE `driver_categories`
@@ -391,11 +345,6 @@ ALTER TABLE `electoral_areas`
 --
 ALTER TABLE `excess_bins`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT for table `pick_up_days`
---
-ALTER TABLE `pick_up_days`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 --
 -- AUTO_INCREMENT for table `schedules`
 --
@@ -430,7 +379,14 @@ ALTER TABLE `users`
 --
 ALTER TABLE `collections`
   ADD CONSTRAINT `collections_ibfk_1` FOREIGN KEY (`customer_id`) REFERENCES `customers` (`id`),
-  ADD CONSTRAINT `collections_ibfk_2` FOREIGN KEY (`bin_id`) REFERENCES `bins` (`id`);
+  ADD CONSTRAINT `collections_ibfk_2` FOREIGN KEY (`bin_id`) REFERENCES `bins` (`id`),
+  ADD CONSTRAINT `collections_ibfk_3` FOREIGN KEY (`supervisor_id`) REFERENCES `users` (`id`);
+
+--
+-- Constraints for table `customers`
+--
+ALTER TABLE `customers`
+  ADD CONSTRAINT `customers_ibfk_1` FOREIGN KEY (`supervisor_id`) REFERENCES `users` (`id`);
 
 --
 -- Constraints for table `customer_bin`
@@ -438,12 +394,6 @@ ALTER TABLE `collections`
 ALTER TABLE `customer_bin`
   ADD CONSTRAINT `customer_bin_ibfk_1` FOREIGN KEY (`customer_id`) REFERENCES `customers` (`id`),
   ADD CONSTRAINT `customer_bin_ibfk_2` FOREIGN KEY (`bin_id`) REFERENCES `bins` (`id`);
-
---
--- Constraints for table `drivers`
---
-ALTER TABLE `drivers`
-  ADD CONSTRAINT `drivers_ibfk_1` FOREIGN KEY (`class_id`) REFERENCES `driver_categories` (`id`);
 
 --
 -- Constraints for table `excess_bins`
@@ -458,14 +408,25 @@ ALTER TABLE `excess_bins`
 ALTER TABLE `schedules`
   ADD CONSTRAINT `schedules_ibfk_1` FOREIGN KEY (`sector_id`) REFERENCES `sectors` (`id`),
   ADD CONSTRAINT `schedules_ibfk_2` FOREIGN KEY (`driver_id`) REFERENCES `drivers` (`id`),
-  ADD CONSTRAINT `schedules_ibfk_3` FOREIGN KEY (`start_day`) REFERENCES `pick_up_days` (`id`),
-  ADD CONSTRAINT `schedules_ibfk_5` FOREIGN KEY (`end_day`) REFERENCES `pick_up_days` (`id`);
+  ADD CONSTRAINT `schedules_ibfk_3` FOREIGN KEY (`supervisor_id`) REFERENCES `users` (`id`);
 
 --
 -- Constraints for table `sectors`
 --
 ALTER TABLE `sectors`
   ADD CONSTRAINT `sectors_ibfk_1` FOREIGN KEY (`electoral_area_id`) REFERENCES `electoral_areas` (`id`);
+
+--
+-- Constraints for table `trucks`
+--
+ALTER TABLE `trucks`
+  ADD CONSTRAINT `trucks_ibfk_1` FOREIGN KEY (`supervisor_id`) REFERENCES `users` (`id`);
+
+--
+-- Constraints for table `users`
+--
+ALTER TABLE `users`
+  ADD CONSTRAINT `users_ibfk_1` FOREIGN KEY (`class_id`) REFERENCES `driver_categories` (`id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
