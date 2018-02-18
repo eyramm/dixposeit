@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 18, 2018 at 04:47 PM
+-- Generation Time: Feb 18, 2018 at 05:04 PM
 -- Server version: 10.1.26-MariaDB
 -- PHP Version: 7.1.8
 
@@ -408,7 +408,7 @@ ALTER TABLE `excess_bins`
 ALTER TABLE `schedules`
   ADD CONSTRAINT `schedules_ibfk_1` FOREIGN KEY (`sector_id`) REFERENCES `sectors` (`id`),
   ADD CONSTRAINT `schedules_ibfk_2` FOREIGN KEY (`driver_id`) REFERENCES `drivers` (`id`),
-  ADD CONSTRAINT `schedules_ibfk_3` FOREIGN KEY (`supervisor_id`) REFERENCES `users` (`id`);
+  ADD CONSTRAINT `schedules_ibfk_3` FOREIGN KEY (`supervisor_id`) REFERENCES `users` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
 -- Constraints for table `sectors`
