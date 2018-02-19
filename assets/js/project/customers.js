@@ -34,7 +34,7 @@ $(function () {
 			},
 			"columnDefs": [
 				{
-					"target": [3],
+					"target": [0],
 					"orderable": false
 				}
 			],

@@ -5,7 +5,7 @@ include '../core/pdo.php';
 $user_id = $_POST['user_id'];
 
 $query = '';
-$columns = array('id','first_name', 'phone_no', 'physical_address');
+$columns = array('customers.id','customers.first_name', 'customers.phone_no', 'customers.physical_address');
 
 $query .= "SELECT * FROM customers INNER JOIN sectors ON sectors.id = customers.sector_id WHERE customers.supervisor_id = '$user_id' AND ";
 
