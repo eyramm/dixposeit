@@ -17,6 +17,8 @@ $supervisor_id = $_SESSION['user_id'];
 
 $sectors = $db->query("SELECT * FROM sectors WHERE supervisor_id = '$supervisor_id' ");
 
+$bin_types = $db->query("SELECT * FROM bins");
+
 ?>
 
     
@@ -36,7 +38,18 @@ $sectors = $db->query("SELECT * FROM sectors WHERE supervisor_id = '$supervisor_
                         <div class="header">
                             <h2>
                                 List of Customers
+                                <span class="pull-right"><button class="btn btn-danger waves-effect"data-toggle="modal" data-target="#myModal">Add New Customer</button></span>
                             </h2>
+                             <!-- <ul class="header-dropdown m-r--5">
+                                <li class="dropdown">
+                                    <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                                        <i class="material-icons">more_vert</i>
+                                    </a>
+                                    <ul class="dropdown-menu pull-right">
+                                        <li><a href="javascript:void(0);">Add New Customer</a></li>
+                                    </ul>
+                                </li>
+                            </ul> -->                            
                         </div>
                         <div class="body">
                             <div class="table-responsive">
@@ -47,14 +60,14 @@ $sectors = $db->query("SELECT * FROM sectors WHERE supervisor_id = '$supervisor_
                                             <th>Name</th>
                                             <th>Contact Info</th>
                                             <th>Location</th>
-                                            <!-- <th>
-                                            	<select name="sector_id" id="sector_id" class=" form-control show-tick" data-live-search="true" title="Choose sector...">
+                                            <th>
+                                            	<select name="sector_id" id="sector_id" class=" form-control show-tick" data-live-search="true" title="Sector">
                                             		<?php foreach($sectors as $sector): ?>
-                                            			<option><?=$sector['name']?></option>
+                                            			<option value="<?=$sector['id']?>"><?=$sector['name']?></option>
                                             		<?php endforeach;?>
                                             	</select>
                                             </th>
-                                            <th>Last Served</th> -->
+                                            <th>Last Served</th>
                                         </tr>
                                     </thead>
                                 </table>
@@ -66,6 +79,165 @@ $sectors = $db->query("SELECT * FROM sectors WHERE supervisor_id = '$supervisor_
             <!-- #END# Table -->
         </div>
     </section>
+
+
+
+    		<!-- MODAL -->
+            <div class="modal fade" id="myModal" tabindex="-1" role="dialog">
+            	<form action="" method="post" id="customer_form">
+	                <div class="modal-dialog modal-lg" role="document">
+	                    <div class="modal-content">
+	                        <div class="modal-header">
+	                            <h4 class="modal-title" id="modal-title">Add Customer</h4>
+	                        </div>
+	                        <div class="modal-body">
+	                            <div class="row clearfix">
+	                            	<div class="col-sm-12">
+	                            		<label class="form-label">Name</label>
+	                            	</div>
+	                                <div class="col-sm-4">
+	                                    <div class="form-group">
+	                                        <div class="form-line">
+	                                            <input type="text" class="form-control" placeholder="First Name" />
+	                                        </div>
+	                                    </div>
+	                                </div>
+	                                <div class="col-sm-4">
+	                                    <div class="form-group">
+	                                        <div class="form-line">
+	                                            <input type="text" class="form-control" placeholder="Last Name" />
+	                                        </div>
+	                                    </div>
+	                                </div>
+	                                <div class="col-sm-4">
+	                                    <div class="form-group">
+	                                        <div class="form-line">
+	                                            <input type="text" class="form-control" placeholder="Other Names" />
+	                                        </div>
+	                                    </div>
+	                                </div>
+                            	</div>
+
+                            	<div class="row clearfix">
+	                            	<div class="col-sm-12">
+	                            		<label class="form-label">Contact</label>
+	                            	</div>
+	                                <div class="col-sm-4">
+	                                    <div class="form-group">
+	                                        <div class="form-line">
+	                                            <input type="text" class="form-control" placeholder="Primary phone number" />
+	                                        </div>
+	                                    </div>
+	                                </div>
+	                                <div class="col-sm-4">
+	                                    <div class="form-group">
+	                                        <div class="form-line">
+	                                            <input type="text" class="form-control" placeholder="Secondary phone number" />
+	                                        </div>
+	                                    </div>
+	                                </div>
+	                                <div class="col-sm-4">
+	                                    <div class="form-group">
+	                                        <div class="form-line">
+	                                            <input type="text" class="form-control" placeholder="Email Address" />
+	                                        </div>
+	                                    </div>
+	                                </div>
+                            	</div>
+
+                            	<div class="row clearfix">
+	                            	<div class="col-sm-12">
+	                            		<label class="form-label">Location</label>
+	                            	</div>
+	                                <div class="col-sm-4">
+	                                    <div class="form-group">
+	                                        <div class="form-line">
+	                                            <input type="text" class="form-control" placeholder="Area" />
+	                                        </div>
+	                                    </div>
+	                                </div>
+	                                <div class="col-sm-4">
+	                                    <div class="form-group">
+	                                        <div class="form-line">
+	                                            <input type="text" class="form-control" placeholder="Service Sector" />
+	                                        </div>
+	                                    </div>
+	                                </div>
+	                                <div class="col-sm-4">
+	                                    <div class="form-group">
+	                                        <div class="form-line">
+	                                            <input type="text" class="form-control" placeholder="Street Name" />
+	                                        </div>
+	                                    </div>
+	                                </div>
+
+	                                <div class="col-sm-4">
+	                                    <div class="form-group">
+	                                        <div class="form-line">
+	                                            <input type="text" class="form-control" placeholder="Classification" />
+	                                        </div>
+	                                    </div>
+	                                </div>
+
+	                                <div class="col-sm-4">
+	                                    <div class="form-group">
+	                                        <div class="form-line">
+	                                            <input type="text" class="form-control" placeholder="Ghana Post GPS Address" />
+	                                        </div>
+	                                    </div>
+	                                </div>
+
+                            	</div>
+
+                            	<div class="row clearfix">
+	                            	<div class="col-sm-12">
+	                            		<label class="form-label">Service Terms</label>
+	                            	</div>
+	                                <div class="col-sm-4">
+	                                    <div class="form-group">
+	                                        <div class="form-line">
+	                                            <select class="form-control show-tick" data-live-search="true" title="-- Bin Types --">
+			                                        <?php foreach($bin_types as $bin_type): ?>
+                                            			<option value="<?=$bin_type['id']?>"><?=$bin_type['type']?></option>
+                                            		<?php endforeach;?>
+			                                    </select>
+	                                        </div>
+	                                    </div>
+	                                </div>
+	                                <div class="col-sm-4">
+	                                    <div class="form-group">
+	                                        <div class="form-line">
+	                                            <input type="number" class="form-control" placeholder="Number of Bins" />
+	                                        </div>
+	                                    </div>
+	                                </div>
+	                                <div class="col-sm-4">
+	                                    <div class="form-group">
+	                                        <div class="form-line">
+	                                            <input type="text" class="form-control" placeholder="Weekly Collection Frequency" />
+	                                        </div>
+	                                    </div>
+	                                </div>
+	                                <div class="col-sm-4">
+	                                    <div class="form-group">
+	                                        <div class="form-line">
+	                                            <input type="text" class="form-control" placeholder="Service charge/pick up" />
+	                                        </div>
+	                                    </div>
+	                                </div>
+                            	</div>
+
+	                        </div>
+	                        <div class="modal-footer">
+	                        	<input type="hidden" name="customer_id" id="customer_id">
+	                        	<input type="hidden" name="btn_action" id="btn_action" value="add">
+	                        	<input type="submit" name="action" id="action" class="btn btn-info" value="SAVE">
+	                            <button type="button" class="btn btn-link waves-effect" data-dismiss="modal">CANCEL</button>
+	                        </div>
+	                    </div>
+	                </div>
+            	</form>
+            </div>
 
 
 
