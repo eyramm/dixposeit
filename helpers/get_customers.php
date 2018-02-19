@@ -1,6 +1,5 @@
 <?php
 require_once '../core/init.php';
-include 'helpers.php';
 
 $query ='';
 $column = array("customers.id", "customers.first_name", "customers.phone_no", "customers.location");
@@ -57,7 +56,7 @@ while ($row = mysqli_fetch_array($result)) {
 	$sub_array[] = $row['id'];
 	$sub_array[] = $row['first_name'];
 	$sub_array[] = $row['phone_no'];
-	$sub_array[] = $row['location'];
+	$sub_array[] = $row['physical_address'];
 	$data[] = $sub_array;
 }
 

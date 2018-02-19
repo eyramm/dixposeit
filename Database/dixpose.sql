@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 19, 2018 at 07:51 AM
+-- Generation Time: Feb 19, 2018 at 09:19 AM
 -- Server version: 10.1.26-MariaDB
 -- PHP Version: 7.1.8
 
@@ -68,8 +68,15 @@ CREATE TABLE `customers` (
   `physical_address` varchar(255) NOT NULL,
   `gps_location` varchar(255) NOT NULL,
   `address_tag` varchar(255) NOT NULL,
-  `sector_id` int(11) NOT NULL
+  `sector_id` int(10) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `customers`
+--
+
+INSERT INTO `customers` (`id`, `supervisor_id`, `first_name`, `last_name`, `other_names`, `phone_no`, `phone_no_2`, `collection_frequency`, `bin_count`, `physical_address`, `gps_location`, `address_tag`, `sector_id`) VALUES
+(1, 2, 'John', 'Smith', '', '00988833', '', 0, 0, 'Lapaz', '', '', 3);
 
 -- --------------------------------------------------------
 
@@ -253,8 +260,8 @@ ALTER TABLE `collections`
 --
 ALTER TABLE `customers`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `sector_id` (`sector_id`),
-  ADD KEY `supervisor_id` (`supervisor_id`);
+  ADD KEY `supervisor_id` (`supervisor_id`),
+  ADD KEY `sector_id` (`sector_id`);
 
 --
 -- Indexes for table `customer_bin`
@@ -340,7 +347,7 @@ ALTER TABLE `collections`
 -- AUTO_INCREMENT for table `customers`
 --
 ALTER TABLE `customers`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 --
 -- AUTO_INCREMENT for table `customer_bin`
 --
@@ -402,7 +409,8 @@ ALTER TABLE `collections`
 -- Constraints for table `customers`
 --
 ALTER TABLE `customers`
-  ADD CONSTRAINT `customers_ibfk_1` FOREIGN KEY (`supervisor_id`) REFERENCES `users` (`id`);
+  ADD CONSTRAINT `customers_ibfk_1` FOREIGN KEY (`supervisor_id`) REFERENCES `users` (`id`),
+  ADD CONSTRAINT `customers_ibfk_2` FOREIGN KEY (`sector_id`) REFERENCES `sectors` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `customer_bin`

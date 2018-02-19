@@ -40,7 +40,7 @@ $sectors = $db->query("SELECT * FROM sectors WHERE supervisor_id = '$supervisor_
                         </div>
                         <div class="body">
                             <div class="table-responsive">
-                                <table class="table table-bordered table-striped table-hover dataTable customers_table">
+                                <table class="table table-bordered table-striped table-hover dataTable customers_table" id="customers_table">
                                     <thead>
                                         <tr>
                                             <th>#</th>
@@ -72,7 +72,7 @@ $sectors = $db->query("SELECT * FROM sectors WHERE supervisor_id = '$supervisor_
    
 
 
-
+<input type="hidden" id="user_id" value="<?=$_SESSION['user_id']?>">
 <?php include 'includes/footer.php'; ?>
 
 <!-- Jquery DataTable Plugin Js -->
