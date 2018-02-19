@@ -19,7 +19,8 @@ $(function () {
   					"targets": [2],
   					"orderable": false
   				}
-  			]
+  			],
+  			"pageLength": 10
   		});
   	}
   	load_data();

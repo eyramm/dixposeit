@@ -47,27 +47,16 @@ $sectors = $db->query("SELECT * FROM sectors WHERE supervisor_id = '$supervisor_
                                             <th>Name</th>
                                             <th>Contact Info</th>
                                             <th>Location</th>
-                                            <th>
+                                            <!-- <th>
                                             	<select name="sector_id" id="sector_id" class=" form-control show-tick" data-live-search="true" title="Choose sector...">
                                             		<?php foreach($sectors as $sector): ?>
                                             			<option><?=$sector['name']?></option>
                                             		<?php endforeach;?>
                                             	</select>
                                             </th>
-                                            <th>Last Served</th>
+                                            <th>Last Served</th> -->
                                         </tr>
                                     </thead>
-
-                                    <tbody>
-                                        <tr>
-                                            <td>1</td>
-                                            <td>Emmanuel Fache</td>
-                                            <td>000000000</td>
-                                            <td>accra</td>
-                                            <td>NH</td>
-                                            <td>2011/04/25</td>
-                                        </tr>
-                                    </tbody>
                                 </table>
                             </div>
                         </div>

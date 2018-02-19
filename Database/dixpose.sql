@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 18, 2018 at 05:26 PM
+-- Generation Time: Feb 19, 2018 at 07:51 AM
 -- Server version: 10.1.26-MariaDB
 -- PHP Version: 7.1.8
 
@@ -153,8 +153,16 @@ CREATE TABLE `sectors` (
   `id` int(11) NOT NULL,
   `supervisor_id` int(11) NOT NULL,
   `name` varchar(255) NOT NULL,
-  `electoral_area_id` int(11) NOT NULL
+  `electoral_area_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `sectors`
+--
+
+INSERT INTO `sectors` (`id`, `supervisor_id`, `name`, `electoral_area_id`) VALUES
+(3, 2, 'Abokobi', NULL),
+(4, 2, 'Lapaz', NULL);
 
 -- --------------------------------------------------------
 
@@ -199,7 +207,7 @@ INSERT INTO `truck_categories` (`id`, `category`) VALUES
 
 CREATE TABLE `users` (
   `id` int(11) NOT NULL,
-  `first_name` varchar(255) NOT NULL,
+  `first_name` varchar(255) DEFAULT NULL,
   `last_name` varchar(255) NOT NULL,
   `other_names` varchar(255) NOT NULL,
   `email` varchar(255) NOT NULL,
@@ -210,8 +218,16 @@ CREATE TABLE `users` (
   `type` enum('supervisor','driver') NOT NULL,
   `parent` int(11) NOT NULL DEFAULT '0',
   `license_id` varchar(255) NOT NULL,
-  `class_id` int(11) NOT NULL
+  `class_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `users`
+--
+
+INSERT INTO `users` (`id`, `first_name`, `last_name`, `other_names`, `email`, `phone_no`, `phone_no_2`, `username`, `password`, `type`, `parent`, `license_id`, `class_id`) VALUES
+(2, 'Emmanuel', 'Fache', '', 'emrade95@gmail.com', '0209436736', '', 'emrade', '$2y$10$CTJgu/t6L5MN5F3zQh3FPOrMxNCZXQFEUVQc9BdAGMwNG92e3jVOC', 'supervisor', 0, '', 1),
+(3, 'Eyram', 'Amedzor', '', 'amedzor13@gmail.com', '0205853322', '', 'eyramm', '$2y$10$CTJgu/t6L5MN5F3zQh3FPOrMxNCZXQFEUVQc9BdAGMwNG92e3jVOC', 'supervisor', 0, '', NULL);
 
 --
 -- Indexes for dumped tables
@@ -354,7 +370,7 @@ ALTER TABLE `schedules`
 -- AUTO_INCREMENT for table `sectors`
 --
 ALTER TABLE `sectors`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 --
 -- AUTO_INCREMENT for table `trucks`
 --
@@ -369,7 +385,7 @@ ALTER TABLE `truck_categories`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 --
 -- Constraints for dumped tables
 --
@@ -413,7 +429,8 @@ ALTER TABLE `schedules`
 -- Constraints for table `sectors`
 --
 ALTER TABLE `sectors`
-  ADD CONSTRAINT `sectors_ibfk_1` FOREIGN KEY (`electoral_area_id`) REFERENCES `electoral_areas` (`id`);
+  ADD CONSTRAINT `sectors_ibfk_1` FOREIGN KEY (`electoral_area_id`) REFERENCES `electoral_areas` (`id`),
+  ADD CONSTRAINT `sectors_ibfk_2` FOREIGN KEY (`supervisor_id`) REFERENCES `users` (`id`);
 
 --
 -- Constraints for table `trucks`

@@ -2,24 +2,36 @@
 require_once '../core/init.php';
 include 'helpers.php';
 
-
+$query ='';
 $column = array("customers.id", "customers.first_name", "customers.phone_no", "customers.location");
 
-$query = "
-	SELECT * FROM customers
-	INNER JOIN sectors
-	ON sectors.id = customers.sector_id
+// $query = "
+// 	SELECT * FROM customers
+// 	INNER JOIN sectors
+// 	ON sectors.id = customers.sector_id
+
+// ";
+
+// $query .= " WHERE ";
+
+// if (isset($_POST["search"]["value"])) {
+// 	$search_value = $_POST["search"]["value"];
+// 	$query .= ' customers.id LIKE "%'.$search_value.'%" ';
+// 	$query .= 'OR customers.first_name LIKE "%'.$search_value.'%" 
+// 	OR customers.phone_no LIKE "%'.$search_value.'%"
+// 	OR customers.location LIKE "%'.$search_value.'% "
+// 	';
+// }
+
+$query .= "SELECT * FROM customers 
 
 ";
 
-$query .= " WHERE ";
-
 if (isset($_POST["search"]["value"])) {
 	$search_value = $_POST["search"]["value"];
-	$query .= ' customers.id LIKE "%'.$search_value.'%" ';
-	$query .= 'OR customers.first_name LIKE "%'.$search_value.'%" 
+	$query .= 'WHERE customers.first_name LIKE "%'.$search_value.'%" 
+	OR customers.last_name LIKE "%'.$search_value.'%"
 	OR customers.phone_no LIKE "%'.$search_value.'%"
-	OR customers.location LIKE "%'.$search_value.'% "
 	';
 }
 
@@ -38,8 +50,9 @@ $result = $db->query($query);
 
 
 
+
 $data = array();
-foreach ($result as $row) {
+while ($row = mysqli_fetch_array($result)) {
 	$sub_array = array();
 	$sub_array[] = $row['id'];
 	$sub_array[] = $row['first_name'];
