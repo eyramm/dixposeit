@@ -66,6 +66,40 @@ if (isset($_POST['action'])) {
 
 		}
 
+	}
+
+	if ($_POST['action'] == 'add_truck') {
+		$supervisor_id = sanitize($_POST['supervisor_id']);
+		$category_id = sanitize($_POST['category_id']);
+		$model = sanitize($_POST['model']);
+		$chassis_no = sanitize($_POST['chassis_no']);
+		$reg_no = sanitize($_POST['reg_no']);
+		$mileage = sanitize($_POST['mileage']);
+
+		$query = $db->query("INSERT INTO trucks (supervisor_id, category_id, model, chassis_no, reg_no, mileage) VALUES ('$supervisor_id', '$category_id', '$model', '$chassis_no', '$reg_no', '$mileage') ");
+		if ($query) {
+			echo 1;
+		}else{
+			echo 0;
+
+		}
+
+	}
+
+	if ($_POST['action'] == 'add_sector') {
+		$supervisor_id = sanitize($_POST['supervisor_id']);
+		$electoral_area_id = sanitize($_POST['electoral_area_id']);
+		$name = sanitize($_POST['name']);
+		$region = sanitize($_POST['region']);
+
+		$query = $db->query("INSERT INTO sectors (supervisor_id, electoral_area_id, name) VALUES ('$supervisor_id', '$electoral_area_id', '$name') ");
+		if ($query) {
+			echo 1;
+		}else{
+			echo 0;
+
+		}
+
 	}		
 }
 

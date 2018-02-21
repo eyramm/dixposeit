@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 21, 2018 at 01:37 AM
+-- Generation Time: Feb 21, 2018 at 06:12 PM
 -- Server version: 10.1.26-MariaDB
 -- PHP Version: 7.1.8
 
@@ -165,10 +165,12 @@ CREATE TABLE `sectors` (
 
 CREATE TABLE `trucks` (
   `id` int(11) NOT NULL,
-  `supervisor_id` int(11) NOT NULL,
-  `category_id` int(11) NOT NULL,
+  `supervisor_id` int(11) DEFAULT NULL,
+  `category_id` int(11) DEFAULT NULL,
   `reg_no` varchar(255) NOT NULL,
-  `millage` int(11) NOT NULL
+  `model` varchar(255) NOT NULL,
+  `chassis_no` varchar(255) NOT NULL,
+  `mileage` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -201,17 +203,22 @@ CREATE TABLE `users` (
   `type` enum('supervisor','driver') NOT NULL,
   `parent` int(11) NOT NULL DEFAULT '0',
   `license_id` varchar(255) NOT NULL,
-  `class_id` int(11) DEFAULT NULL
+  `class_id` int(11) DEFAULT NULL,
+  `sector_id` int(10) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`id`, `first_name`, `last_name`, `other_names`, `email`, `phone_no`, `phone_no_2`, `username`, `password`, `type`, `parent`, `license_id`, `class_id`) VALUES
-(1, 'Admin', 'User', '', 'admin@gmail.com', '0200000000', '', 'admin', '$2y$10$CTJgu/t6L5MN5F3zQh3FPOrMxNCZXQFEUVQc9BdAGMwNG92e3jVOC', 'supervisor', 0, '', NULL),
-(2, 'Emmanuel', 'Fache', '', 'emrade95@gmail.com', '0209436736', '', 'emrade', '$2y$10$CTJgu/t6L5MN5F3zQh3FPOrMxNCZXQFEUVQc9BdAGMwNG92e3jVOC', 'supervisor', 0, '', 1),
-(3, 'Eyram', 'Amedzor', '', 'amedzor13@gmail.com', '0205853322', '', 'eyramm', '$2y$10$CTJgu/t6L5MN5F3zQh3FPOrMxNCZXQFEUVQc9BdAGMwNG92e3jVOC', 'supervisor', 0, '', NULL);
+INSERT INTO `users` (`id`, `first_name`, `last_name`, `other_names`, `email`, `phone_no`, `phone_no_2`, `username`, `password`, `type`, `parent`, `license_id`, `class_id`, `sector_id`) VALUES
+(1, 'Admin', 'User', '', 'admin@gmail.com', '0200000000', '', 'admin', '$2y$10$CTJgu/t6L5MN5F3zQh3FPOrMxNCZXQFEUVQc9BdAGMwNG92e3jVOC', 'supervisor', 0, '', NULL, NULL),
+(2, 'Emmanuel', 'Fache', '', 'emrade95@gmail.com', '0209436736', '', 'emrade', '$2y$10$CTJgu/t6L5MN5F3zQh3FPOrMxNCZXQFEUVQc9BdAGMwNG92e3jVOC', 'supervisor', 0, '', 1, NULL),
+(3, 'Eyram', 'Amedzor', '', 'amedzor13@gmail.com', '0205853322', '', 'eyramm', '$2y$10$CTJgu/t6L5MN5F3zQh3FPOrMxNCZXQFEUVQc9BdAGMwNG92e3jVOC', 'supervisor', 0, '', NULL, NULL),
+(4, 'John', '', '', '', '', '', '', '', 'driver', 2, '', 1, 3),
+(5, 'Zargo', '', '', '', '', '', '', '', 'driver', 2, '', 1, 3),
+(6, 'Zargin', '', '', '', '', '', '', '', 'driver', 2, '', 1, 3),
+(7, 'JY', 'Garo', '', '', '', '', '', '', 'driver', 2, '', 1, 4);
 
 --
 -- Indexes for dumped tables
@@ -304,7 +311,8 @@ ALTER TABLE `truck_categories`
 --
 ALTER TABLE `users`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `class_id` (`class_id`);
+  ADD KEY `class_id` (`class_id`),
+  ADD KEY `sector_id` (`sector_id`);
 
 --
 -- AUTO_INCREMENT for dumped tables
@@ -324,7 +332,7 @@ ALTER TABLE `collections`
 -- AUTO_INCREMENT for table `customers`
 --
 ALTER TABLE `customers`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 --
 -- AUTO_INCREMENT for table `customer_bin`
 --
@@ -339,7 +347,7 @@ ALTER TABLE `driver_categories`
 -- AUTO_INCREMENT for table `electoral_areas`
 --
 ALTER TABLE `electoral_areas`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 --
 -- AUTO_INCREMENT for table `excess_bins`
 --
@@ -354,12 +362,12 @@ ALTER TABLE `schedules`
 -- AUTO_INCREMENT for table `sectors`
 --
 ALTER TABLE `sectors`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 --
 -- AUTO_INCREMENT for table `trucks`
 --
 ALTER TABLE `trucks`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 --
 -- AUTO_INCREMENT for table `truck_categories`
 --
@@ -369,7 +377,7 @@ ALTER TABLE `truck_categories`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 --
 -- Constraints for dumped tables
 --
@@ -421,13 +429,15 @@ ALTER TABLE `sectors`
 -- Constraints for table `trucks`
 --
 ALTER TABLE `trucks`
-  ADD CONSTRAINT `trucks_ibfk_1` FOREIGN KEY (`supervisor_id`) REFERENCES `users` (`id`);
+  ADD CONSTRAINT `trucks_ibfk_1` FOREIGN KEY (`supervisor_id`) REFERENCES `users` (`id`),
+  ADD CONSTRAINT `trucks_ibfk_2` FOREIGN KEY (`category_id`) REFERENCES `truck_categories` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `users`
 --
 ALTER TABLE `users`
-  ADD CONSTRAINT `users_ibfk_1` FOREIGN KEY (`class_id`) REFERENCES `driver_categories` (`id`);
+  ADD CONSTRAINT `users_ibfk_1` FOREIGN KEY (`class_id`) REFERENCES `driver_categories` (`id`),
+  ADD CONSTRAINT `users_ibfk_2` FOREIGN KEY (`sector_id`) REFERENCES `sectors` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
