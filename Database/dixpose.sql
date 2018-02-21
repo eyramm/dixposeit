@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 19, 2018 at 09:19 AM
+-- Generation Time: Feb 21, 2018 at 01:37 AM
 -- Server version: 10.1.26-MariaDB
 -- PHP Version: 7.1.8
 
@@ -57,12 +57,13 @@ CREATE TABLE `collections` (
 
 CREATE TABLE `customers` (
   `id` int(11) NOT NULL,
-  `supervisor_id` int(11) NOT NULL,
+  `supervisor_id` int(11) DEFAULT NULL,
   `first_name` varchar(255) NOT NULL,
   `last_name` varchar(255) NOT NULL,
   `other_names` varchar(255) NOT NULL,
   `phone_no` varchar(255) NOT NULL,
   `phone_no_2` varchar(255) NOT NULL,
+  `email` varchar(255) NOT NULL,
   `collection_frequency` int(11) NOT NULL,
   `bin_count` int(11) NOT NULL,
   `physical_address` varchar(255) NOT NULL,
@@ -70,13 +71,6 @@ CREATE TABLE `customers` (
   `address_tag` varchar(255) NOT NULL,
   `sector_id` int(10) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `customers`
---
-
-INSERT INTO `customers` (`id`, `supervisor_id`, `first_name`, `last_name`, `other_names`, `phone_no`, `phone_no_2`, `collection_frequency`, `bin_count`, `physical_address`, `gps_location`, `address_tag`, `sector_id`) VALUES
-(1, 2, 'John', 'Smith', '', '00988833', '', 0, 0, 'Lapaz', '', '', 3);
 
 -- --------------------------------------------------------
 
@@ -163,14 +157,6 @@ CREATE TABLE `sectors` (
   `electoral_area_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
---
--- Dumping data for table `sectors`
---
-
-INSERT INTO `sectors` (`id`, `supervisor_id`, `name`, `electoral_area_id`) VALUES
-(3, 2, 'Abokobi', NULL),
-(4, 2, 'Lapaz', NULL);
-
 -- --------------------------------------------------------
 
 --
@@ -195,16 +181,6 @@ CREATE TABLE `truck_categories` (
   `id` int(11) NOT NULL,
   `category` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `truck_categories`
---
-
-INSERT INTO `truck_categories` (`id`, `category`) VALUES
-(1, 'Single Axel'),
-(2, 'Borla Taxi'),
-(3, 'Double Axel'),
-(4, 'Skipper');
 
 -- --------------------------------------------------------
 
@@ -233,6 +209,7 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `first_name`, `last_name`, `other_names`, `email`, `phone_no`, `phone_no_2`, `username`, `password`, `type`, `parent`, `license_id`, `class_id`) VALUES
+(1, 'Admin', 'User', '', 'admin@gmail.com', '0200000000', '', 'admin', '$2y$10$CTJgu/t6L5MN5F3zQh3FPOrMxNCZXQFEUVQc9BdAGMwNG92e3jVOC', 'supervisor', 0, '', NULL),
 (2, 'Emmanuel', 'Fache', '', 'emrade95@gmail.com', '0209436736', '', 'emrade', '$2y$10$CTJgu/t6L5MN5F3zQh3FPOrMxNCZXQFEUVQc9BdAGMwNG92e3jVOC', 'supervisor', 0, '', 1),
 (3, 'Eyram', 'Amedzor', '', 'amedzor13@gmail.com', '0205853322', '', 'eyramm', '$2y$10$CTJgu/t6L5MN5F3zQh3FPOrMxNCZXQFEUVQc9BdAGMwNG92e3jVOC', 'supervisor', 0, '', NULL);
 
@@ -347,7 +324,7 @@ ALTER TABLE `collections`
 -- AUTO_INCREMENT for table `customers`
 --
 ALTER TABLE `customers`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 --
 -- AUTO_INCREMENT for table `customer_bin`
 --

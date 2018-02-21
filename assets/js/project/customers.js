@@ -23,7 +23,7 @@ $(function () {
 		});
   	}
 
-  	$(document).on('change', '#sector_id', function(){
+  	$(document).on('change', '#sector', function(){
   		var sector_id = $(this).val();
   		$('#customers_table').DataTable().destroy();
   		if (sector_id != '') {
@@ -32,6 +32,64 @@ $(function () {
   		{
   			load_data();
   		}
-  	})
+  	});
+
+  	$('#customer_form').submit(function(event){
+		event.preventDefault();
+		var form_data = $(this).serialize();
+		$.ajax({
+			url: 'helpers/action.php',
+			method: 'POST',
+			data: form_data,
+			success: function(response){
+				if(response == '1'){
+					$('#customer_form')[0].reset();
+					$('#myModal').modal('hide');
+					// $.notify({
+					// 	title: '<strong>Success! </strong>',
+					// 	message: 'New customer addedd.'
+					// },
+					// {
+					// 	type: 'success',
+					// 	animate:
+					// 	{
+					// 		enter: 'animated bounceIn',
+					// 		exit: 'animated bounceOut'
+					// 	},
+					// 	placement: {
+					// 		from: 'top',
+					// 		align: 'right'
+					// 	}
+					// });;
+					//dataTable.ajax.reload();
+					$('#customers_table').DataTable().destroy();
+					load_data();
+				}else{
+					$('#myModal').modal('hide');
+					$.notify({
+						title: '<strong>Sorry! </strong>',
+						message: 'Something went wrong.'
+					},
+					{
+						type: 'error',
+						animate:
+						{
+							enter: 'animated bounceIn',
+							exit: 'animated bounceOut'
+						},
+						placement: {
+							from: 'top',
+							align: 'right'
+						}
+					});
+				}					
+
+				
+			}
+		});
+		
+	});
+
+
 });
 

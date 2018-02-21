@@ -61,7 +61,8 @@ $bin_types = $db->query("SELECT * FROM bins");
                                             <th>Contact Info</th>
                                             <th>Location</th>
                                             <th>
-                                            	<select name="sector_id" id="sector_id" class=" form-control show-tick" data-live-search="true" title="Sector">
+                                            	<select name="sector" id="sector" class=" form-control show-tick" data-live-search="true" title="Sector">
+                                            		<option value="">View All</option>
                                             		<?php foreach($sectors as $sector): ?>
                                             			<option value="<?=$sector['id']?>"><?=$sector['name']?></option>
                                             		<?php endforeach;?>
@@ -98,21 +99,21 @@ $bin_types = $db->query("SELECT * FROM bins");
 	                                <div class="col-sm-4">
 	                                    <div class="form-group">
 	                                        <div class="form-line">
-	                                            <input type="text" class="form-control" placeholder="First Name" />
+	                                            <input type="text" class="form-control" placeholder="First Name" name="first_name" id="first_name" />
 	                                        </div>
 	                                    </div>
 	                                </div>
 	                                <div class="col-sm-4">
 	                                    <div class="form-group">
 	                                        <div class="form-line">
-	                                            <input type="text" class="form-control" placeholder="Last Name" />
+	                                            <input type="text" class="form-control" placeholder="Last Name" name="last_name" id="last_name"/>
 	                                        </div>
 	                                    </div>
 	                                </div>
 	                                <div class="col-sm-4">
 	                                    <div class="form-group">
 	                                        <div class="form-line">
-	                                            <input type="text" class="form-control" placeholder="Other Names" />
+	                                            <input type="text" class="form-control" placeholder="Other Names" name="other_names" id="other_names"/>
 	                                        </div>
 	                                    </div>
 	                                </div>
@@ -125,21 +126,21 @@ $bin_types = $db->query("SELECT * FROM bins");
 	                                <div class="col-sm-4">
 	                                    <div class="form-group">
 	                                        <div class="form-line">
-	                                            <input type="text" class="form-control" placeholder="Primary phone number" />
+	                                            <input type="text" class="form-control" placeholder="Primary phone number" name="phone_no" id="phone_no"/>
 	                                        </div>
 	                                    </div>
 	                                </div>
 	                                <div class="col-sm-4">
 	                                    <div class="form-group">
 	                                        <div class="form-line">
-	                                            <input type="text" class="form-control" placeholder="Secondary phone number" />
+	                                            <input type="text" class="form-control" placeholder="Secondary phone number" name="phone_no_2" id="phone_no_2"/>
 	                                        </div>
 	                                    </div>
 	                                </div>
 	                                <div class="col-sm-4">
 	                                    <div class="form-group">
 	                                        <div class="form-line">
-	                                            <input type="text" class="form-control" placeholder="Email Address" />
+	                                            <input type="text" class="form-control" placeholder="Email Address" name="email" id="email"/>
 	                                        </div>
 	                                    </div>
 	                                </div>
@@ -152,37 +153,41 @@ $bin_types = $db->query("SELECT * FROM bins");
 	                                <div class="col-sm-4">
 	                                    <div class="form-group">
 	                                        <div class="form-line">
-	                                            <input type="text" class="form-control" placeholder="Area" />
+	                                            <input type="text" class="form-control" placeholder="Area" name="physical_address" id="physical_address"/>
 	                                        </div>
 	                                    </div>
 	                                </div>
 	                                <div class="col-sm-4">
 	                                    <div class="form-group">
-	                                        <div class="form-line">
-	                                            <input type="text" class="form-control" placeholder="Service Sector" />
-	                                        </div>
+	                                        <select class="form-control show-tick" data-live-search="true" title="-- Service Sector --" name="sector_id" id="sector_id" required="">
+			                                    <?php foreach($sectors as $sector): ?>
+                                            		<option value="<?=$sector['id']?>"><?=$sector['name']?></option>
+                                            	<?php endforeach;?>
+			                                </select>
 	                                    </div>
 	                                </div>
 	                                <div class="col-sm-4">
 	                                    <div class="form-group">
 	                                        <div class="form-line">
-	                                            <input type="text" class="form-control" placeholder="Street Name" />
-	                                        </div>
-	                                    </div>
-	                                </div>
-
-	                                <div class="col-sm-4">
-	                                    <div class="form-group">
-	                                        <div class="form-line">
-	                                            <input type="text" class="form-control" placeholder="Classification" />
+	                                            <input type="text" class="form-control" placeholder="Street Name" name="street_name" id="street_name"/>
 	                                        </div>
 	                                    </div>
 	                                </div>
 
 	                                <div class="col-sm-4">
 	                                    <div class="form-group">
+	                                        <select class="form-control show-tick" data-live-search="true" title="-- Classification --">
+			                                        <!-- <?php foreach($bin_types as $bin_type): ?>
+                                            			<option value="<?=$bin_type['id']?>"><?=$bin_type['type']?></option>
+                                            		<?php endforeach;?> -->
+			                                    </select>
+	                                    </div>
+	                                </div>
+
+	                                <div class="col-sm-4">
+	                                    <div class="form-group">
 	                                        <div class="form-line">
-	                                            <input type="text" class="form-control" placeholder="Ghana Post GPS Address" />
+	                                            <input type="text" class="form-control" placeholder="Ghana Post GPS Address" name="address_tag" id="address_tag"/>
 	                                        </div>
 	                                    </div>
 	                                </div>
@@ -230,8 +235,9 @@ $bin_types = $db->query("SELECT * FROM bins");
 	                        </div>
 	                        <div class="modal-footer">
 	                        	<input type="hidden" name="customer_id" id="customer_id">
-	                        	<input type="hidden" name="btn_action" id="btn_action" value="add">
-	                        	<input type="submit" name="action" id="action" class="btn btn-info" value="SAVE">
+	                        	<input type="hidden" name="action" id="action" value="add_customer">
+	                        	<input type="submit" name="action_btn" id="action_btn" class="btn btn-info" value="SAVE">
+	                        	<input type="hidden" name="supervisor_id" id="supervisor_id" value="<?=$_SESSION['user_id']?>">
 	                            <button type="button" class="btn btn-link waves-effect" data-dismiss="modal">CANCEL</button>
 	                        </div>
 	                    </div>
