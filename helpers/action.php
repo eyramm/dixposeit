@@ -40,7 +40,29 @@ if (isset($_POST['action'])) {
 		if ($query) {
 			echo 1;
 		}else{
-			echo var_dump($query);
+			echo 0;
+
+		}
+
+	}
+
+	if ($_POST['action'] == 'add_driver') {
+		$supervisor_id = sanitize($_POST['supervisor_id']);
+		$first_name = sanitize($_POST['first_name']);
+		$last_name = sanitize($_POST['last_name']);
+		$other_names = sanitize($_POST['other_names']);
+		$phone_no = sanitize($_POST['phone_no']);
+		$phone_no_2 = sanitize($_POST['phone_no_2']);
+		$email = sanitize($_POST['email']);
+		$license_id = sanitize($_POST['license_id']);
+		$class_id = sanitize($_POST['class_id']);
+		$sector_id = sanitize($_POST['sector_id']);
+
+		$query = $db->query("INSERT INTO users (first_name, last_name, other_names, phone_no, phone_no_2, email, license_id, class_id, sector_id, parent, type) VALUES ('$first_name', '$last_name', '$other_names', '$phone_no', '$phone_no_2', '$email', '$license_id', '$class_id', '$sector_id', '$supervisor_id', 'driver') ");
+		if ($query) {
+			echo 1;
+		}else{
+			echo 0;
 
 		}
 

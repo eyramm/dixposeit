@@ -47,7 +47,7 @@ $(function () {
 					$('#myModal').modal('hide');
 					// $.notify({
 					// 	title: '<strong>Success! </strong>',
-					// 	message: 'New customer addedd.'
+					// 	message: 'New customer added.'
 					// },
 					// {
 					// 	type: 'success',
@@ -60,28 +60,29 @@ $(function () {
 					// 		from: 'top',
 					// 		align: 'right'
 					// 	}
-					// });;
-					//dataTable.ajax.reload();
+					// });
+					swal("Success!", "New customer added!", "success");
 					$('#customers_table').DataTable().destroy();
 					load_data();
 				}else{
 					$('#myModal').modal('hide');
-					$.notify({
-						title: '<strong>Sorry! </strong>',
-						message: 'Something went wrong.'
-					},
-					{
-						type: 'error',
-						animate:
-						{
-							enter: 'animated bounceIn',
-							exit: 'animated bounceOut'
-						},
-						placement: {
-							from: 'top',
-							align: 'right'
-						}
-					});
+					// $.notify({
+					// 	title: '<strong>Sorry! </strong>',
+					// 	message: 'Something went wrong.'
+					// },
+					// {
+					// 	type: 'error',
+					// 	animate:
+					// 	{
+					// 		enter: 'animated bounceIn',
+					// 		exit: 'animated bounceOut'
+					// 	},
+					// 	placement: {
+					// 		from: 'top',
+					// 		align: 'right'
+					// 	}
+					// });
+					swal("Error!", "Something went wrong!", "error");
 				}					
 
 				

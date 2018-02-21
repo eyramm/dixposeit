@@ -5,21 +5,22 @@ include '../core/pdo.php';
 $user_id = $_POST['user_id'];
 
 $query = '';
-$columns = array('customers.id','customers.first_name', 'customers.phone_no', 'customers.physical_address', 'sectors.name', '');
+$columns = array('users.id','users.first_name', 'users.phone_no', 'users.license_id', 'sectors.name');
 
-$query .= "SELECT customers.*, sectors.id, sectors.name as sector_name FROM customers INNER JOIN sectors ON sectors.id = customers.sector_id WHERE customers.supervisor_id = '$user_id' AND ";
+$query .= "SELECT users.*, sectors.id, sectors.name as sector_name FROM users INNER JOIN sectors ON sectors.id = users.sector_id WHERE users.parent = '$user_id' AND ";
+
 if(isset($_POST['is_sector'])){
 	$sector_id = $_POST['is_sector'];
 	$query .= " sectors.id = '$sector_id' AND ";
 }
 if (isset($_POST["search"]["value"])) {
 	$search_value = $_POST["search"]["value"];
-	$query .= ' (customers.id LIKE "%'.$search_value.'%" 
-	OR customers.first_name LIKE "%'.$search_value.'%"
-	OR customers.last_name LIKE "%'.$search_value.'%"
-	OR customers.other_names LIKE "%'.$search_value.'%"
-	OR customers.phone_no LIKE "%'.$search_value.'%"
-	OR customers.physical_address LIKE "%'.$search_value.'%"
+	$query .= ' (users.id LIKE "%'.$search_value.'%" 
+	OR users.first_name LIKE "%'.$search_value.'%"
+	OR users.last_name LIKE "%'.$search_value.'%"
+	OR users.other_names LIKE "%'.$search_value.'%"
+	OR users.phone_no LIKE "%'.$search_value.'%"
+	OR users.license_id LIKE "%'.$search_value.'%"
 	OR sectors.name LIKE "%'.$search_value.'%" )
 	';
 }
@@ -27,7 +28,7 @@ if (isset($_POST["search"]["value"])) {
 if (isset($_POST['order'])) {
 	$query .= 'ORDER BY '.$columns[$_POST['order']['0']['column']].' '.$_POST['order']['0']['dir'].' ';
 }else{
-	$query .= 'ORDER BY customers.id DESC ';
+	$query .= 'ORDER BY users.id DESC ';
 }
 
 if ($_POST['length'] != -1) {
@@ -49,14 +50,14 @@ foreach ($result as $i => $row) {
 	$sub_array[] = $i+1;
 	$sub_array[] = $row['first_name']." ".$row['last_name']." ".$row['other_names'];
 	$sub_array[] = $row['phone_no'];
-	$sub_array[] = $row['physical_address'];
+	$sub_array[] = $row['license_id'];
 	$sub_array[] = $row['sector_name'];
-	$sub_array[] = '';
 	$data[] = $sub_array;
 }
 
 function get_total_all_records($db){
-	$statement = $db->prepare("SELECT * FROM customers ");
+	$user_id = $_POST['user_id'];
+	$statement = $db->prepare("SELECT * FROM users WHERE parent = '$user_id' ");
 	$statement->execute();
 	return $statement->rowCount();
 }

@@ -22,8 +22,8 @@
     <!-- Animation Css -->
     <link href="assets/plugins/animate-css/animate.css" rel="stylesheet" />
 
-    <!-- Morris Chart Css-->
-    <link href="assets/plugins/morrisjs/morris.css" rel="stylesheet" />
+    <!-- Sweetalert Css -->
+    <link href="assets/plugins/sweetalert/sweetalert.css" rel="stylesheet" />
 
     <!-- Custom Css -->
     <link href="assets/css/style.css" rel="stylesheet">
