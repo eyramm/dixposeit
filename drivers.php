@@ -51,7 +51,7 @@ $classes = $db->query("SELECT * FROM driver_categories ");
                                             <th>Contact Info</th>
                                             <th>Driver License ID</th>
                                             <th>
-                                            	<select name="sector" id="sector" class=" form-control show-tick" data-live-search="true" title="Currently assigned sector">
+                                            	<select name="sector" id="sector" class=" form-control show-tick" data-live-search="true" title="Assigned sector">
                                             		<option value="">View All</option>
                                             		<?php foreach($sectors as $sector): ?>
                                             			<option value="<?=$sector['id']?>"><?=$sector['name']?></option>
